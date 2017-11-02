@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'io.atomicbits.scraml'
 
 android {
     compileSdkVersion 26
@@ -31,4 +32,20 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.8.6'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.8.6'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.8.6'
+
+}
+
+scraml {
+    ramlApi '/io/atomicbits/raml10/RamlTestClient.raml'
+    licenseKey 'We, Atomic BITS, use the free scraml license in this project without any intend to serve commercial purposes for ourselves or anyone else.'
+    classHeader 'All rights reserved.\n' +
+            'This is a custom class header.'
+    // platform 'JavaJackson' or 'ScalaPlay' // on roadmap: 'AndroidJavaJackson', 'OsxSwift' and 'Python'
+    // apiPackage
+    // resourceDirectory
+    // outputDirectory
 }
