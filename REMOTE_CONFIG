@@ -1,0 +1,9 @@
+git remote add -f -t develop --no-tags scraml-test-java git@github.com:atomicbits/scraml-test-java.git
+git read-tree --prefix=raml10/src/main/resources/ -u scraml-test-java/develop:src/main/resources/
+git commit
+
+// update:
+
+git rm -rf raml10/src/main/resources/
+git read-tree --prefix=raml10/src/main/resources/ -u scraml-test-java/develop:src/main/resources/
+git commit
