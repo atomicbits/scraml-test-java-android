@@ -53,7 +53,7 @@ import static org.awaitility.Awaitility.*;
  */
 public class RamlModelGeneratorTest {
 
-    private static int port = 8282;
+    private static int port = 8284;
     private static String host = "localhost";
     private static WireMockServer wireMockServer = new WireMockServer(WireMockConfiguration.wireMockConfig().port(port));
     private static RamlTestClient client;
