@@ -37,7 +37,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<RestAction> {
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 
         RestAction action = values.get(position);
-        textView.setText(action.getName());
+        textView.setText(action.getDescription());
 
         if (action.isSuccessful() == null) {
             imageView.setImageResource(R.drawable.ic_check_box_outline_blank_black_24px);

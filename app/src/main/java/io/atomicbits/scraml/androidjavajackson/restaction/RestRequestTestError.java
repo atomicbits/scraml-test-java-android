@@ -1,5 +1,6 @@
 package io.atomicbits.scraml.androidjavajackson.restaction;
 
+import io.atomicbits.raml10.RamlTestClient;
 import io.atomicbits.raml10.User;
 import io.atomicbits.raml10.dsl.androidjavajackson.Callback;
 
@@ -9,9 +10,14 @@ import io.atomicbits.raml10.dsl.androidjavajackson.Callback;
 
 public class RestRequestTestError extends RestAction {
 
+    public RestRequestTestError(RamlTestClient client) {
+        super(client);
+    }
+
     @Override
-    public <User> void call(Callback<User> callback) {
-        callback.onFailure(new RuntimeException("foobar"));
+    public void call(ActionFinished finishCallback) {
+        setSuccessful(false);
+        finishCallback.finished();
     }
 
     @Override

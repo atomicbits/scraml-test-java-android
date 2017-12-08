@@ -8,11 +8,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import io.atomicbits.raml10.RamlTestClient;
 import io.atomicbits.raml10.dsl.androidjavajackson.Callback;
 import io.atomicbits.raml10.dsl.androidjavajackson.Response;
+import io.atomicbits.raml10.dsl.androidjavajackson.client.ClientConfig;
+import io.atomicbits.scraml.androidjavajackson.restaction.ActionFinished;
 import io.atomicbits.scraml.androidjavajackson.restaction.RestAction;
 import io.atomicbits.scraml.androidjavajackson.restaction.RestRequestTestError;
 import io.atomicbits.scraml.androidjavajackson.restaction.RestRequestTestOk;
@@ -57,9 +63,16 @@ public class ScramlTestActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_scraml_test);
 
+        int port = 8284;
+        String host = "localhost";
+        Map<String, String> defaultHeaders = new HashMap<>();
+        ClientConfig config = new ClientConfig();
+        config.setRequestCharset(Charset.forName("UTF-8"));
+        RamlTestClient client = new RamlTestClient(host, port, "http", null, config, defaultHeaders);
+
         restActions = new ArrayList<>();
-        restActions.add(new RestRequestTestOk());
-        restActions.add(new RestRequestTestError());
+        restActions.add(new RestRequestTestOk(client));
+        restActions.add(new RestRequestTestError(client));
 
         adapter = new MySimpleArrayAdapter(this, restActions);
 
@@ -76,13 +89,13 @@ public class ScramlTestActivity extends AppCompatActivity {
 
     private void clearStatus() {
         for (RestAction action : restActions) {
-            action.setSuccessful(null);
+            action.reset();
         }
         adapter.notifyDataSetChanged();
     }
 
     private void startAllTests() {
-        runButton.setEnabled(false);
+        // runButton.setEnabled(false);
         clearStatus();
         toRun = new ArrayList<>();
         toRun.addAll(restActions);
@@ -92,37 +105,22 @@ public class ScramlTestActivity extends AppCompatActivity {
     private void runNext() {
         if (!toRun.isEmpty()) {
             final RestAction action = toRun.remove(0);
-            action.call(new Callback<Object>() {
+            action.call(new ActionFinished() {
                 @Override
-                public void onFailure(Throwable t) {
-                    action.setSuccessful(false);
-                    adapter.notifyDataSetChanged();
-                    runNext();
-                }
-
-                @Override
-                public void onNokResponse(Response<String> response) {
-                    action.setSuccessful(false);
-                    adapter.notifyDataSetChanged();
-                    runNext();
-                }
-
-                @Override
-                public void onOkResponse(Response<Object> response) {
-                    action.setSuccessful(true);
+                public void finished() {
                     adapter.notifyDataSetChanged();
                     runNext();
                 }
             });
         } else {
-            runButton.setEnabled(true);
+            // runButton.setEnabled(true);
         }
     }
 
     private void reset() {
         this.toRun = new ArrayList<>();
         clearStatus();
-        runButton.setEnabled(true);
+        // runButton.setEnabled(true);
     }
 
 }
