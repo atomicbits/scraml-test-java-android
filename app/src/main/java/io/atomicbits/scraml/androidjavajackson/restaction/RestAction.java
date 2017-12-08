@@ -1,7 +1,6 @@
 package io.atomicbits.scraml.androidjavajackson.restaction;
 
 import io.atomicbits.raml10.RamlTestClient;
-import io.atomicbits.raml10.dsl.androidjavajackson.Callback;
 
 /**
  * Created by peter on 8/12/17.

@@ -63,12 +63,14 @@ public class ScramlTestActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_scraml_test);
 
-        int port = 8284;
-        String host = "localhost";
+        int port = 80;
+        String host = "scraml.io";
+        String prefix = null; // "integrationtest";
         Map<String, String> defaultHeaders = new HashMap<>();
         ClientConfig config = new ClientConfig();
         config.setRequestCharset(Charset.forName("UTF-8"));
-        RamlTestClient client = new RamlTestClient(host, port, "http", null, config, defaultHeaders);
+        config.setConnectTimeout(1000);
+        RamlTestClient client = new RamlTestClient(host, port, "http", prefix, config, defaultHeaders);
 
         restActions = new ArrayList<>();
         restActions.add(new RestRequestTestOk(client));
@@ -108,8 +110,13 @@ public class ScramlTestActivity extends AppCompatActivity {
             action.call(new ActionFinished() {
                 @Override
                 public void finished() {
-                    adapter.notifyDataSetChanged();
-                    runNext();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                            runNext();
+                        }
+                    });
                 }
             });
         } else {

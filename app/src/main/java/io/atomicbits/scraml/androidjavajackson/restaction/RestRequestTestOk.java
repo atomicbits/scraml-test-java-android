@@ -20,6 +20,8 @@ public class RestRequestTestOk extends RestAction {
     @Override
     public void call(final ActionFinished finishCallback) {
 
+        System.out.println("Calling REST service...");
+
         getClient()
                 .rest.user.get(51L, "John J.", null, Arrays.asList("ESA", "NASA"))
                 .call(new Callback<User>() {
@@ -45,15 +47,11 @@ public class RestRequestTestOk extends RestAction {
                     }
                 });
 
-
-
     }
 
     @Override
     public String getName() {
         return "Request test OK";
     }
-
-
 
 }
