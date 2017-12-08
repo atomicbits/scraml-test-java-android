@@ -8,16 +8,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
+import io.atomicbits.scraml.androidjavajackson.restaction.RestAction;
+
 /**
  * Created by peter on 6/12/17.
  */
 
-public class MySimpleArrayAdapter extends ArrayAdapter<String> {
+public class MySimpleArrayAdapter extends ArrayAdapter<RestAction> {
 
     private final Context context;
-    private final String[] values;
+    private final List<RestAction> values;
 
-    public MySimpleArrayAdapter(Context context, String[] values) {
+    public MySimpleArrayAdapter(Context context, List<RestAction> values) {
         super(context, R.layout.rowlayout, values);
         this.context = context;
         this.values = values;
@@ -31,16 +35,20 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> {
         View rowView = inflater.inflate(R.layout.rowlayout, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.label);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-        textView.setText(values[position]);
-        // Change the icon for Windows and iPhone
-        String s = values[position];
-        if (s.startsWith("Windows7") || s.startsWith("iPhone")
-                || s.startsWith("Solaris")) {
-            imageView.setColorFilter(getContext().getResources().getColor(R.color.darkred));
-            imageView.setImageResource(R.drawable.ic_indeterminate_check_box_black_24px);
+
+        RestAction action = values.get(position);
+        textView.setText(action.getName());
+
+        if (action.isSuccessful() == null) {
+            imageView.setImageResource(R.drawable.ic_check_box_outline_blank_black_24px);
         } else {
-            imageView.setColorFilter(getContext().getResources().getColor(R.color.darkgreen));
-            imageView.setImageResource(R.drawable.ic_check_box_black_24px);
+            if (action.isSuccessful()) {
+                imageView.setColorFilter(getContext().getResources().getColor(R.color.darkgreen));
+                imageView.setImageResource(R.drawable.ic_check_box_black_24px);
+            } else {
+                imageView.setColorFilter(getContext().getResources().getColor(R.color.darkred));
+                imageView.setImageResource(R.drawable.ic_indeterminate_check_box_black_24px);
+            }
         }
 
         return rowView;
