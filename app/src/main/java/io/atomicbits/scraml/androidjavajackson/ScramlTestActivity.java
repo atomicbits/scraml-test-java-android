@@ -65,7 +65,7 @@ public class ScramlTestActivity extends AppCompatActivity {
 
         int port = 80;
         String host = "scraml.io";
-        String prefix = null; // "integrationtest";
+        String prefix = null;
         Map<String, String> defaultHeaders = new HashMap<>();
         ClientConfig config = new ClientConfig();
         config.setRequestCharset(Charset.forName("UTF-8"));

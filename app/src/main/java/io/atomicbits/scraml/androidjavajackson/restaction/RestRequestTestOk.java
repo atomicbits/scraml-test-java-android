@@ -1,9 +1,6 @@
 package io.atomicbits.scraml.androidjavajackson.restaction;
 
-import java.util.Arrays;
-
 import io.atomicbits.raml10.RamlTestClient;
-import io.atomicbits.raml10.User;
 import io.atomicbits.raml10.dsl.androidjavajackson.Callback;
 import io.atomicbits.raml10.dsl.androidjavajackson.Response;
 
@@ -20,14 +17,14 @@ public class RestRequestTestOk extends RestAction {
     @Override
     public void call(final ActionFinished finishCallback) {
 
-        System.out.println("Calling REST service...");
-
         getClient()
-                .rest.user.get(51L, "John J.", null, Arrays.asList("ESA", "NASA"))
-                .call(new Callback<User>() {
+                .test
+                .get()
+                .call(new Callback<String>() {
                     @Override
                     public void onFailure(Throwable t) {
                         setErrorMessage(t.getMessage());
+                        t.printStackTrace();
                         setSuccessful(false);
                         finishCallback.finished();
                     }
@@ -35,13 +32,13 @@ public class RestRequestTestOk extends RestAction {
                     @Override
                     public void onNokResponse(Response<String> response) {
                         setErrorMessage(response.getStringBody());
+                        System.out.println(response.getStringBody());
                         setSuccessful(false);
                         finishCallback.finished();
                     }
 
                     @Override
-                    public void onOkResponse(Response<User> response) {
-
+                    public void onOkResponse(Response<String> response) {
                         setSuccessful(true);
                         finishCallback.finished();
                     }

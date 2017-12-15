@@ -71,6 +71,23 @@ types:
       era:
         type: string
 
+
+/test:
+  get:
+    description: Get a test page
+    responses:
+      200:
+        body:
+          text/html:
+
+/doesntexist:
+  get:
+    description: Get a nonexisting page
+    responses:
+      200:
+        body:
+          text/html:
+
 /books:
   get:
     description: Get all books
